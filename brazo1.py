@@ -15,7 +15,6 @@ class ControlServo(QWidget):
         self.sliders = {}
         self.labels = {}
 
-        # Control solo para ejes X, Y, Z
         for eje in ['X', 'Y', 'Z']: 
             slider = QSlider(Qt.Orientation.Horizontal)
             slider.setMinimum(0)
@@ -41,7 +40,7 @@ class ControlServo(QWidget):
 
     def actualizar_sliders(self):
         try:
-            while ser.in_waiting:  # Leer todos los bytes disponibles
+            while ser.in_waiting:  
                 valor = ser.readline().decode().strip()
                 if valor:  
                     print("Recibido:", valor)  
@@ -75,6 +74,6 @@ if __name__ == '__main__':
 
     temporizador = QTimer()
     temporizador.timeout.connect(ventana.actualizar_sliders)
-    temporizador.start(20)  # Actualizar cada 20 milisegundos
+    temporizador.start(20) 
 
     sys.exit(app.exec())
