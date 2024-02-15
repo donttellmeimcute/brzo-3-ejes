@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QSlider, QLabel
 from PyQt6.QtCore import Qt, QTimer
 import serial
 
-ser = serial.Serial('COM4', 115200, timeout=0)  # Establecer timeout a 0 para lectura no bloqueante
+ser = serial.Serial('COM4', 115200, timeout=0) 
 
 class ControlServo(QWidget):
     def __init__(self):
