@@ -2,8 +2,9 @@ import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QSlider, QLabel
 from PyQt6.QtCore import Qt, QTimer
 import serial
+import math
 
-ser = serial.Serial('COM4', 115200, timeout=0) 
+ser = serial.Serial('COM3', 115200, timeout=0) 
 
 class ControlServo(QWidget):
     def __init__(self):
@@ -66,6 +67,25 @@ def enviar_comando(coordenada, valor):
     comando = f"{coordenada}:{valor}\n"
     ser.write(comando.encode())
     print(f"Enviado: {comando}")
+
+def mover_servos_hacia_punto(x_target, y_target, z_target):
+
+    x_angle = calcular_angulo_servo(math.degrees(math.atan2(y_target, z_target)))
+    y_angle = calcular_angulo_servo(math.degrees(math.atan2(x_target, z_target)))
+    z_angle = calcular_angulo_servo(math.degrees(math.atan2(x_target, y_target)))
+
+ 
+    ventana.sliders['X'].setValue(x_angle)
+    ventana.sliders['Y'].setValue(y_angle)
+    ventana.sliders['Z'].setValue(z_angle)
+
+    enviar_comando('X', x_angle)
+    enviar_comando('Y', y_angle)
+    enviar_comando('Z', z_angle)
+
+def calcular_angulo_servo(coordenada):
+
+    return int(round(coordenada * (255 / 180)))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
